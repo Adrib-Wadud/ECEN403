@@ -46,29 +46,33 @@ font = ImageFont.load_default()
 # Some other nice fonts to try: http://www.dafont.com/bitmap.php
 # font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 9)
  
-temperature = 25
+temperature = 25.1
 humidity = 50
 fanSpeed = 0
 humidifierIntensity = 0
 tempSetting = 0
 humidityCap = 0
+batteryLevel = 100
 autoMode = 1
  
 while True:
     try:
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, width, height), outline=0, fill=0)
-
+        
+        halfLine1 = "Temp:" + str(temperature)
+        halfLine2 = "Batt:" + str(batteryLevel)
+        firstLine = str(halfLine1) + (((width//6) - len(halfLine1) - len(halfLine2))*" ") + str(halfLine2) #6-pixel character width
         # Write four lines of text.
-        draw.text((0, top + 0), "Temperature: " + str(temperature), font=font, fill=255)
-        draw.text((0, top + 8), "Humidity: " + str(humidity), font=font, fill=255)
+        draw.text((0, top + 0), firstLine, font=font, fill=255)
+        draw.text((0, top + 8), "Humidity:" + str(humidity), font=font, fill=255)
         # Check current operation mode and display corresponding information
         if(not autoMode):
-            draw.text((0, top + 16), "Fan Speed: " + str(fanSpeed), font=font, fill=255)
-            draw.text((0, top + 24), "Humidifier: " + str(humidifierIntensity), font=font, fill=255)
+            draw.text((0, top + 16), "Fan Speed:" + str(fanSpeed), font=font, fill=255)
+            draw.text((0, top + 24), "Humidifier:" + str(humidifierIntensity), font=font, fill=255)
         elif(autoMode):
-            draw.text((0, top + 16), "Desired Temp: " + str(tempSetting), font=font, fill=255)
-            draw.text((0, top + 24), "Humidity Cap: " + str(humidityCap), font=font, fill=255)
+            draw.text((0, top + 16), "Desired Temp:" + str(tempSetting), font=font, fill=255)
+            draw.text((0, top + 24), "Humidity Cap:" + str(humidityCap), font=font, fill=255)
         
         # Display image.
         disp.image(image)
