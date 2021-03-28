@@ -145,8 +145,6 @@ def readRenogy(fileObj):
                 print("Failed to read from instrument")
                 #I/O error
 
-#Run the function to read the power meter.
-
 while True:
         if (debug): print("Opened new tmp file /ramdisk/Renogy.prom.tmp")
         file_object = open('/ramdisk/Renogy.prom.tmp', mode='w')
