@@ -2,7 +2,7 @@ from time import sleep
 import sys
 from LCD_Class import LCD
 
-
+#initialize LCD
 lcd = LCD()
 
 temperature = 25.1

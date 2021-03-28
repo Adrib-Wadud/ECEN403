@@ -42,7 +42,7 @@ class LCD:
         self.draw.rectangle((0, 0, self.pixelWidth, self.pixelHeight), outline=0, fill=0)
         
         #construct first text line with temp left-adjusted and battery level right-adjusted
-        halfLine1 = "Temp:" + str(temperature)
+        halfLine1 = "Temp:" + str(temperature) + u"\N{DEGREE SIGN}C"
         halfLine2 = "Batt:" + str(batteryLevel)
         firstLine = str(halfLine1) + (((self.pixelWidth//6) - len(halfLine1) - len(halfLine2))*" ") + str(halfLine2) #6-pixel character width
         
