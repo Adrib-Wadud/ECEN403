@@ -44,7 +44,7 @@ pastSensorTime = time() #save time to allow sensor reading averages to be output
 
 #set initial temperature and voltage readings
 tempVoltage = adc.getVoltage(tempChannel)
-temperature = adc.convertToTemp(tempVoltage, 2)
+temperature = adc.convertToTemp(tempVoltage, 1)
 #placeholder for humidity sensor incorporation
 humidity = 50
 
@@ -74,7 +74,7 @@ while True:
         if((presentTime - pastSensorTime) >= SENSOR_UPDATE_TIME): #after every second, calculate sensor data averages
             #average temperature sensor voltage output and convert to temperature reading
             averageTempVoltage = tempVoltageSum / numReadings
-            temperature = adc.convertToTemp(averageTempVoltage, 2)
+            temperature = adc.convertToTemp(averageTempVoltage, 1)
             
             #reset variables used for 1 second averaging
             tempVoltageSum, numReadings = 0, 0
@@ -92,4 +92,4 @@ while True:
         lcd.disp.fill(0)
         lcd.disp.show()
         
-        sys.exit("Program Terminated")
+        exit("Program Terminated")
