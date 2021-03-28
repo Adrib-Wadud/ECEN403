@@ -255,6 +255,7 @@ def readRenogy(fileObj):
 
         except IOError:
                 print("Failed to read from instrument")
+                #I/O error
 
 #Run the function to read the power meter.
 
