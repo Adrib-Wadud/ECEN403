@@ -1,17 +1,9 @@
-#!/usr/bin/env python3
-
-# pip3 uninstall pyserial
-# pip3 uninstall serial
-# pip3 uninstall minimalmodbus
-# pip3 install pyserial
-# pip3 install minimalmodbus
-
 import minimalmodbus
 import serial
 import sys, os, io
 import time 
 
-debug = True
+debug = False
 sleepTime = 10
 devName = '/dev/ttyUSB0'
 
