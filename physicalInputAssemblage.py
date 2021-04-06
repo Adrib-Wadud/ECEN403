@@ -1,3 +1,5 @@
+from gpiozero import Button
+
 class physicalInputAssemblage:
     
     MAX_FAN_SPEED = 4
@@ -11,6 +13,19 @@ class physicalInputAssemblage:
         self.tempSetting = tempSetting
         self.humidityCap = humidityCap
         self.autoMode = autoMode
+        
+        #wiring buttons to GPIO pins (use "J8:##" for BOARD numbers, gpiozero defaults to BCM numbers)
+        self.fan_TempUpButton = Button("J8:11")
+        self.fan_TempDownButton = Button("J8:13")
+        self.humidifier_HumidityUpButton = Button("J8:16")
+        self.humidifier_HumidityDownButton = Button("J8:15")
+
+        #wiring switch to GPIO pins
+        self.manualAutoSwitch = Button("J8:18")
+
+        #check switch starting position
+        if (self.manualAutoSwitch.is_pressed): #reading initial position of the mode switch
+            self.switchToAuto()
         
     def incrementFan_Temp(self): #increments fan speed/temperature setting (up to max)
         if (not self.autoMode): #Manual mode button functionality
