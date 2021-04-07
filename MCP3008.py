@@ -17,10 +17,16 @@ class MCP3008:
         voltage = (processedData / 1024) * self.VREF
         return voltage
 
-    def convertToTemp(self, voltage, decimalPlaces = 2): #converts voltage to rounded temperature value
-        temperature = voltage / 0.010 #10mV/C (from LM35 temp sensor datasheet)
-        temperature = round(temperature, decimalPlaces)
+    def getTemperature(self, channel): #reads volage and converts to rounded temperature value
+        temperatureVoltage = self.getVoltage(channel)
+        temperature = temperatureVoltage / 0.010 #10mV/C (from LM35 temp sensor datasheet)
         return temperature
+    
+    def getHumidity(self, channel, temperature): #reads volage and converts to rounded humidity value
+        humidityVoltage = self.getVoltage(channel)
+        sensorHumidity = ((humidityVoltage / self.VREF) - 0.16) / 0.0062 #sensor voltage to humidity conversion (from HIH-4000 humidity sensor datasheet)
+        humidity = sensorHumidity / (1.0546 - 0.00216 * temperature) #adjusting humidity reading for temperature dependency (from HIH-4000 datasheet)
+        return humidity
             
     def close(self):
         self.spi.close()
