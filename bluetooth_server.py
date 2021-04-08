@@ -22,9 +22,29 @@ print("Accepted connection from ", client_info)
 try:
     while True:
         data = client_sock.recv(1024)
+	
         if len(data) == 0: break
-        print("Received Hello from client with data :  "+ data)
-	client_sock.send("Received %s from server" % data)
+        print(data)
+        if data == 'Activate Auto Mode!\n':
+	   client_sock.send('Auto mode activation command recieved')
+	elif data == 'Activate Manual Mode!\n':
+	   client_sock.send('Manual mode activation command received')
+	elif data == 'Temperature Up!\n':
+	   client_sock.send('Temperature up command received')
+        elif data == 'Temperature Down!\n':
+           client_sock.send('Temperature down command received')
+	elif data == 'Humidity Up!\n':
+           client_sock.send('Humidity up command received')
+	elif data == 'Humidity Down!\n':
+           client_sock.send('Humidty down command received')
+	elif data == 'Fan Speed Up!\n':
+           client_sock.send('Fan speed up command received')
+	elif data == 'Fan Speed Down!\n':
+           client_sock.send('Fan speed down command received')
+	elif data == 'Humidifier Intensity Up!\n':
+           client_sock.send('Humidifier intensity up command received')
+	elif data == 'Humidifier Intensity Down!\n':
+           client_sock.send('Humidifier intensity down command received')
 except IOError:
     pass
 
