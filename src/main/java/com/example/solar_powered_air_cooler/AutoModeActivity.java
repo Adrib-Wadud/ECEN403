@@ -29,8 +29,26 @@ public class AutoModeActivity extends AppCompatActivity {
 
                 MainActivity.sendMessageToServer("Activate Auto Mode!");
                 String message = MainActivity.recvdMessageFromServer();
+                TextView mode_activated = (TextView)findViewById(R.id.textView22);
+                mode_activated.setText("Auto mode activated");
                 Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
                 toast.show();
+        }
+        else{
+            Toast toast = Toast.makeText(this, "Blueotooth connection not established", Toast.LENGTH_LONG);
+            toast.show();
+        }
+
+    }
+
+    public void deactivateAutoMode(View v){
+        if(btSocket!=null) {
+            MainActivity.sendMessageToServer("Deactivate Auto Mode!");
+            TextView mode_activated = (TextView)findViewById(R.id.textView22);
+            mode_activated.setText("Auto mode not activated");
+            String message = MainActivity.recvdMessageFromServer();
+            Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+            toast.show();
         }
         else{
             Toast toast = Toast.makeText(this, "Blueotooth connection not established", Toast.LENGTH_LONG);

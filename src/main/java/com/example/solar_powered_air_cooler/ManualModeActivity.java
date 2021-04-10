@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ManualModeActivity extends AppCompatActivity {
@@ -21,6 +22,23 @@ public class ManualModeActivity extends AppCompatActivity {
 
             MainActivity.sendMessageToServer("Activate Manual Mode!");
             String message = MainActivity.recvdMessageFromServer();
+            TextView mode_activated = (TextView)findViewById(R.id.textView24);
+            mode_activated.setText("Manual mode activated");
+            Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+            toast.show();
+        }
+        else{
+            Toast toast = Toast.makeText(this, "Blueotooth connection not established", Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    public void deactivateManualMode(View v){
+        if(btSocket!=null) {
+            MainActivity.sendMessageToServer("Deactivate Manual Mode!");
+            String message = MainActivity.recvdMessageFromServer();
+            TextView mode_activated = (TextView)findViewById(R.id.textView24);
+            mode_activated.setText("Manual mode not activated");
             Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
             toast.show();
         }
