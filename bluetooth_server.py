@@ -45,6 +45,10 @@ try:
            client_sock.send('Humidifier intensity up command received')
 	elif data == 'Humidifier Intensity Down!\n':
            client_sock.send('Humidifier intensity down command received')
+        elif data == 'Deactivate Manual Mode!\n':
+           client_sock.send('Manual Mode deactivation command received')
+        elif data == 'Deactivate Auto Mode!\n':
+           client_sock.send('Auto mode deactivation command received')
 except IOError:
     pass
 
