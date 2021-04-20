@@ -20,6 +20,7 @@ class MCP3008:
     def getTemperature(self, channel): #reads volage and converts to rounded temperature value
         temperatureVoltage = self.getVoltage(channel)
         temperature = temperatureVoltage / 0.010 #10mV/C (from LM35 temp sensor datasheet)
+        #temperature = 25 + (temperatureVoltage - 0.750) / 0.010 #10mV/C (from TMP36 temp sensor datasheet)
         return temperature
     
     def getHumidity(self, channel, temperature): #reads volage and converts to rounded humidity value

@@ -2,7 +2,8 @@ from MCP3008 import MCP3008
 from physicalInputAssemblage import physicalInputAssemblage
 from LCD import LCD
 
-from time import time
+from time import time, sleep
+from RPi.GPIO import cleanup 
 from sys import exit
 
 SENSOR_UPDATE_TIME = 1 #seconds
@@ -74,9 +75,10 @@ while True:
             lcd.displaySystemData(temperature, humidity, physicalInput.fanSpeed,
                     physicalInput.humidifierIntensity, physicalInput.tempSetting,
                     physicalInput.humidityCap, batteryLevel, physicalInput.autoMode)
-        
+            
     except KeyboardInterrupt: #allow user to terminate program with ctrl + c
         #clear screen
         lcd.lcd.clear()
+        cleanup()
         
         exit("Program Terminated")

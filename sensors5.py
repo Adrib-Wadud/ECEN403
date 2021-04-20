@@ -1,32 +1,42 @@
 from MCP3008 import MCP3008
 from time import time
-import sys
+from sys import exit
+
+SENSOR_UPDATE_TIME = 1 #seconds
 
 #initialize ADC
-mcp = MCP3008()
+adc = MCP3008()
 
 #defining variables for use in main program loop
-tempChannel = 0 #ADC channel connected to temp sensor
-tempVoltageSum = 0 #running sum of temp sensor voltage readings (averaged to smooth sensor voltage output)
+temperatureChannel = 0 #ADC channel connected to temp sensor
+temperatureSum = 0 #running sum of temp sensor readings (averaged to smooth sensor output)
+
+humidityChannel = 1 #ADC channel connected to humidity sensor
+humiditySum = 0 #running sum of humidity sensor readings (averaged to smooth sensor output)
+
 numReadings = 0 #count of readings (used when averaging sensor voltage output)
-pastTime = time() #save time to allow sensor reading averages to be output every second
+pastSensorTime = time() #save time to allow sensor reading averages to be output every second
 
 while True: #sensor reading display loop
-    Try:
-        #counting each voltage reading and adding to sum in preparation for averaging
-        tempVoltage = mcp.getVoltage(tempChannel)
-        tempVoltageSum += tempVoltage
+    try:
+        #counting each temperature and humidity reading and adding to individual sums in preparation for averaging
+        currentTemperature = adc.getTemperature(temperatureChannel)
+        temperatureSum += currentTemperature
+        currentHumidity = adc.getHumidity(humidityChannel, currentTemperature)
+        humiditySum += currentHumidity
         numReadings += 1
         
         presentTime = time()
-        if((presentTime - pastTime) >= 1): #after every second, average sensor voltage output and convert to sensor reading
-            averageTempVoltage = tempVoltageSum / numReadings
-            temperature = mcp.convertToTemp(averageTempVoltage)
+        if((presentTime - pastSensorTime) >= SENSOR_UPDATE_TIME): #after every second, calculate sensor data averages
+            #average temperature and humidity readings and round to one decimal place
+            temperature = round(temperatureSum / numReadings, 1)
             print("Temperature:", temperature, u"\N{DEGREE SIGN}C")
+            humidity = round(humiditySum / numReadings, 1)
+            print("Humidity:", humidity)
             
             #reset variables used for 1 second averaging
-            tempVoltageSum, numReadings = 0, 0
-            pastTime = presentTime
+            temperatureSum, humiditySum, numReadings = 0, 0, 0
+            pastSensorTime = presentTime
     
-    Except KeyboardInterrupt:
+    except KeyboardInterrupt:
         sys.exit("Program Terminated")

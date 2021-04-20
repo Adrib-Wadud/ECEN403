@@ -22,7 +22,7 @@ class LCD:
                         humidityCap, batteryLevel, autoMode):
         
         #construct first text line with temp left-adjusted and battery level right-adjusted
-        halfLine1 = "Temp:" + str(temperature) + u"\N{DEGREE SIGN}C"
+        halfLine1 = "Temp:" + str(temperature) + "C"
         halfLine2 = "Batt:" + str(batteryLevel)
         firstLine = str(halfLine1) + (self.columns - len(halfLine1) - len(halfLine2))*" " + str(halfLine2) #6-pixel character width
         
