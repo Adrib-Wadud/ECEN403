@@ -15,18 +15,21 @@ class MCP3008:
         rawData = self.spi.xfer([1, (8 + channel) << 4, 0])
         processedData = ((rawData[1]&3) << 8) + rawData[2]
         voltage = (processedData / 1024) * self.VREF
+        
         return voltage
 
     def getTemperature(self, channel): #reads volage and converts to rounded temperature value
         temperatureVoltage = self.getVoltage(channel)
-        temperature = temperatureVoltage / 0.010 #10mV/C (from LM35 temp sensor datasheet)
-        #temperature = 25 + (temperatureVoltage - 0.750) / 0.010 #10mV/C (from TMP36 temp sensor datasheet)
+        temperature = temperatureVoltage / 0.010 #10mV/C (from LM35 datasheet)
+        #temperature = 25 + (temperatureVoltage - 0.750) / 0.010 #10mV/C (from TMP36 datasheet)
+        
         return temperature
     
     def getHumidity(self, channel, temperature): #reads volage and converts to rounded humidity value
         humidityVoltage = self.getVoltage(channel)
-        sensorHumidity = ((humidityVoltage / self.VREF) - 0.16) / 0.0062 #sensor voltage to humidity conversion (from HIH-4000 humidity sensor datasheet)
-        humidity = sensorHumidity / (1.0546 - 0.00216 * temperature) #adjusting humidity reading for temperature dependency (from HIH-4000 datasheet)
+        sensorHumidity = ((humidityVoltage / self.VREF) - 0.16) / 0.0062 #sensor voltage to humidity conversion (from HIH-4000 datasheet)
+        humidity = sensorHumidity / (1.0546 - 0.00216 * temperature) #adjusting humidity reading for temperature dependency
+                                                                     #(from HIH-4000 datasheet)
         return humidity
             
     def close(self):
