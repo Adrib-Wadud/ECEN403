@@ -116,21 +116,21 @@ def readRenogy(fileObj): #function to read data
                     if(humidIntensity >0):
                          humidIntensity =0
 
-                batVolts = renogy.read_register(0x101)#battery voltage block
-                #batVolts = 127
-                batVolts = batVolts/10
+                batVoltage = renogy.read_register(0x101)#battery voltage block
+                #batVoltage = 127
+                batVoltage= batVoltage/10
                 if (run): print("Battery Voltage:", float(batVolts), "v")
-                valName  = "mode=\"batVolts\"" #format for writing data to file
+                valName  = "mode=\"batVoltage\"" #format for writing data to file
                 valName  = "{" + valName + "}"
-                dataStr  = f"Renogy{valName} {batVolts}"
+                dataStr  = f"Renogy{valName} {batVoltage}"
                 print(dataStr, file=fileObj)
 
                 register = renogy.read_register(0x102)#battery charging amps
                 if (run): print("Charging Amps:", float(register/100), "a")
 
                 register = renogy.read_register(0x107)#PV VOltage
-                if (run): print("PV volts:", float(register/10), "v") #read register
-                valName  = "mode=\"pvVolts\"" #format for writing data to file
+                if (run): print("PV Voltage:", float(register/10), "v") #read register
+                valName  = "mode=\"pvVoltage\"" #format for writing data to file
                 valName  = "{" + valName + "}"
                 dataStr  = f"Renogy{valName} {float(register/10)}"
                 print(dataStr, file=fileObj)
