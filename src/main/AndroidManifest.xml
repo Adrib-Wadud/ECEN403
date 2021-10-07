@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.solar_powered_air_cooler">
 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Solar_Powered_Air_Cooler">
-        <activity android:name=".ManualModeActivity"></activity>
+        <activity android:name=".PowerActivity"></activity>
+        <activity android:name=".ManualModeActivity" />
         <activity android:name=".AutoModeActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -22,5 +20,8 @@
             </intent-filter>
         </activity>
     </application>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
 </manifest>

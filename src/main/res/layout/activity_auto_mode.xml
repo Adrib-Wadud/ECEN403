@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.012" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/charge_level_auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="charge"
@@ -45,7 +45,7 @@
         app:layout_constraintVertical_bias="0.297" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/set_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -111,7 +111,7 @@
         app:layout_constraintVertical_bias="0.618" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/set_humidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
