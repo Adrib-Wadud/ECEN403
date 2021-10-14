@@ -1,0 +1,2 @@
+hciconfig hciO piscan
+sdptool add SP
