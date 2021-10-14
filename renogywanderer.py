@@ -1,3 +1,5 @@
+
+
 import minimalmodbus
 import serial
 import sys, os, io
@@ -65,7 +67,7 @@ def readRenogy(fileObj):
                         if (debug): print("max discharge:", float(maxD), "a")
                         if (debug): print("sys type:", prodType, "00=controller 1=inverter")
 
-                register = renogy.read_register(0x100)
+                charge_level = renogy.read_register(0x100)
                 #register = 50
                 fanspeed = 4
                 humidIntensity = 4
@@ -74,7 +76,7 @@ def readRenogy(fileObj):
                 #print("Prior Humidifier Intensity:", float(humidIntensity))
 
                 
-                if (run): print("Battery SOC:", float(register), "%")
+                if (run): print("Battery SOC:", float(charge_level), "%")
                 valName  = "mode=\"SOC\""
                 valName  = "{" + valName + "}"
                 dataStr  = f"Renogy{valName} {float(register)}"
@@ -124,8 +126,9 @@ def readRenogy(fileObj):
                 dataStr  = f"Renogy{valName} {batVolts}"
                 print(dataStr, file=fileObj)
 
-                register = renogy.read_register(0x102)
-                if (run): print("Charging Amps:", float(register/100), "a")
+                charging_amps = renogy.read_register(0x102)
+                charging_amps = float(charging_amps/100)
+                if (run): print("Charging Amps:", charging_amps, "a")
 
                 if (False):     # for chargers with remote temp sensors
                         register = renogy.read_register(0x103)
@@ -142,8 +145,9 @@ def readRenogy(fileObj):
                 dataStr  = f"Renogy{valName} {float(register/10)}"
                 print(dataStr, file=fileObj)
 
-                register = renogy.read_register(0x108)
-                if (run): print("PV amps:", float(register/100), "a")
+                panel_current = renogy.read_register(0x108)
+                panel_current = float(panel_current/100)
+                if (run): print("PV amps:", panel_current, "a")
                 valName  = "mode=\"pvAmps\""
                 valName  = "{" + valName + "}"
                 dataStr  = f"Renogy{valName} {float(register/100)}"
@@ -173,23 +177,50 @@ def readRenogy(fileObj):
                 valName  = "{" + valName + ", myStr=\"" + batTypeStr + "\"}"
                 dataStr  = f"Renogy{valName} {register}"
                 print(dataStr, file=fileObj)
+                
+                return [batVolts, charging_amps, panel_current, pvWatts, charge_level] 
 
         except IOError:
                 print("Failed to read from instrument")
 
 # Run the function to read the power meter.
+# 
+# while True:
+#         if (debug): print("Opened new tmp file /ramdisk/Renogy.prom.tmp")
+#         file_object = open('/ramdisk/Renogy.prom.tmp', mode='w')
+# 
+#         # write data here
+# 
+#         if (debug): print("\nReading Renogy Wanderer data...")
+#         Bat_Volt = readRenogy(file_object)
+#         print('TESTING Bat Volts!')
+#         print(str(Bat_Volt))
+# 
+#         file_object.flush()
+#         file_object.close()
+#         outLine = os.system('/bin/mv /ramdisk/Renogy.prom.tmp /ramdisk/Renogy.prom')
+# 
+#         time.sleep(sleepTime)
 
-while True:
-        if (debug): print("Opened new tmp file /ramdisk/Renogy.prom.tmp")
-        file_object = open('/ramdisk/Renogy.prom.tmp', mode='w')
+def get_power_data():
+    # return [batVolts, charging_amps, panel_current, pvWatts] 
+
+    if (debug): print("Opened new tmp file /ramdisk/Renogy.prom.tmp")
+    file_object = open('/ramdisk/Renogy.prom.tmp', mode='w')
 
         # write data here
 
-        if (debug): print("\nReading Renogy Wanderer data...")
-        readRenogy(file_object)
+    if (debug): print("\nReading Renogy Wanderer data...")
+        
+    power_metrics = readRenogy(file_object)
+    print('TESTING Bat Volts!')
+    print(power_metrics)
 
-        file_object.flush()
-        file_object.close()
-        outLine = os.system('/bin/mv /ramdisk/Renogy.prom.tmp /ramdisk/Renogy.prom')
+    file_object.flush()
+    file_object.close()
+    outLine = os.system('/bin/mv /ramdisk/Renogy.prom.tmp /ramdisk/Renogy.prom')
+    
+    return power_metrics
 
-        time.sleep(sleepTime)
+
+
