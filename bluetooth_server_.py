@@ -1,6 +1,6 @@
 from bluetooth import *
 from cooling_subsystem_refined import manual_control, auto_control
-from renogywanderer import get_power_data
+# from renogywanderer import get_power_data
 
 
 server_sock=BluetoothSocket( RFCOMM )
@@ -116,30 +116,34 @@ try:
             msg = str(humidity_intensity)
             client_sock.send(msg)
         elif data == 'Get current charge!\n':
-            power_metric = get_power_data()
-            charge_level = power_metric[4]
-            msg = str(charge_level)
-            client_sock.send(msg)
+#             power_metric = get_power_data()
+#             charge_level = power_metric[4]
+#             msg = str(charge_level)
+             client_sock.send('100')
         elif data == 'Get current bat_volt!\n':
-            power_metric = get_power_data()
-            print(power_metric)
-            bat_volt = power_metric[0]
-            print(bat_volt)
-            msg = str(bat_volt)
-            print(msg)
-            client_sock.send(msg)
+#             power_metric = get_power_data()
+#             print(power_metric)
+#             bat_volt = power_metric[0]
+#             print(bat_volt)
+#             msg = str(bat_volt)
+#             print(msg)
+#             client_sock.send(msg)
+            client_sock.send('100')
         elif data == 'Get current charge_amps!\n':
-            power_metric = get_power_data()
-            charge_amps = str(power_metric[1])
-            client_sock.send(charge_amps)
+            client_sock.send('100')
+#             power_metric = get_power_data()
+#             charge_amps = str(power_metric[1])
+#             client_sock.send(charge_amps)
         elif data == 'Get current pan_watts!\n':
-            power_metric = get_power_data()
-            pan_watts = str(power_metric[2])
-            client_sock.send(pan_watts)
+            client_sock.send('100')
+#             power_metric = get_power_data()
+#             pan_watts = str(power_metric[2])
+#             client_sock.send(pan_watts)
         elif data == 'Get current pan_amps!\n':
-            power_metric = get_power_data()
-            pan_amps = str(power_metric[3])
-            client_sock.send(pan_amps)
+            client_sock.send('100')
+#             power_metric = get_power_data()
+#             pan_amps = str(power_metric[3])
+#             client_sock.send(pan_amps)
             
 
 
