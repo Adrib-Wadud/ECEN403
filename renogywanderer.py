@@ -1,5 +1,4 @@
 
-
 import minimalmodbus
 import serial
 import sys, os, io
@@ -221,6 +220,3 @@ def get_power_data():
     outLine = os.system('/bin/mv /ramdisk/Renogy.prom.tmp /ramdisk/Renogy.prom')
     
     return power_metrics
-
-
-
