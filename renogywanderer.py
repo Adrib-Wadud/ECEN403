@@ -1,4 +1,3 @@
-
 import minimalmodbus
 import serial
 import sys, os, io
@@ -10,6 +9,7 @@ sleepTime = 5
 #devName = '/dev/ttyUSB0' #USB Connection
 devName = '/dev/serial0' #TX RX Serial connection (pin 8 &  10)
 
+#debug mode to see if data is polled correctly
 if (len(sys.argv) > 1):
         if (sys.argv[1] == "-d"):
                 debug=True
@@ -66,56 +66,14 @@ def readRenogy(fileObj):
                         if (debug): print("max discharge:", float(maxD), "a")
                         if (debug): print("sys type:", prodType, "00=controller 1=inverter")
 
-                charge_level = renogy.read_register(0x100)
-                #register = 50
-                fanspeed = 4
-                humidIntensity = 4
-                
-                #print("Prior Fan Speed:", float(fanspeed))
-                #print("Prior Humidifier Intensity:", float(humidIntensity))
-
-                
+                #for production
                 if (run): print("Battery SOC:", float(charge_level), "%")
                 valName  = "mode=\"SOC\""
                 valName  = "{" + valName + "}"
                 dataStr  = f"Renogy{valName} {float(register)}"
                 print(dataStr, file=fileObj)
                 
-                if(register == 100):
-                    print("Able to reach maximum fan speed and humidifier")
-                
-                if(register == 75):
-                    print("Still able to reach maximum fan speed and humidifier")
-                
-                if(register == 50 and lowPower== False):
-                    print("Currently in Low Power Mode. Capping fan speed and humidifier intensity to 2!")
-                    lowPower == True
-                    MAXFanspeed =2
-                    MAXHIntensity = 2
-                    if(fanspeed >2):
-                         fanspeed = 2
-                         print("Adjusted Fan Speed:", float(fanspeed))
-                    if(humidIntensity >2):
-                         humidIntensity =2
-                         print("Adjusted Humidifier Intensity:", float(humidIntensity))
-                         
-                if(register == 25):
-                    print("Entering Low Power Mode... capping fan speed and humidifier intensity to 1!")
-                    MAXFanspeed =1
-                    MAXHIntensity = 1
-                    if (fanspeed >1):
-                         fanspeed = 1
-                    if (humidIntensity >1):
-                         humidItensity =1
-                if(register == 0):
-                    print("Turning off fan and humidifier! Charge battery!")
-                    MAXFanspeed =0
-                    MAXHIntensity = 0
-                    if(fanspeed >0):
-                         fanspeed = 0
-                    if(humidIntensity >0):
-                         humidItensity =0
-
+                #for testing
                 batVolts = renogy.read_register(0x101)
                 #batVolts = 127
                 batVolts = batVolts/10
@@ -124,34 +82,31 @@ def readRenogy(fileObj):
                 valName  = "{" + valName + "}"
                 dataStr  = f"Renogy{valName} {batVolts}"
                 print(dataStr, file=fileObj)
-
+                
+                #for production
                 charging_amps = renogy.read_register(0x102)
                 charging_amps = float(charging_amps/100)
                 if (run): print("Charging Amps:", charging_amps, "a")
 
-                if (False):     # for chargers with remote temp sensors
-                        register = renogy.read_register(0x103)
-                        battery_temp_bits = register & 0x00ff
-                        temp_value = battery_temp_bits & 0x0ff
-                        sign = battery_temp_bits >> 7
-                        battery_temp = -(temp_value - 128) if sign == 1 else temp_value
-                        print("battery temp:", float(battery_temp), "C")
 
+                #for testing
                 register = renogy.read_register(0x107)
                 if (run): print("PV volts:", float(register/10), "v")
                 valName  = "mode=\"pvVolts\""
                 valName  = "{" + valName + "}"
                 dataStr  = f"Renogy{valName} {float(register/10)}"
                 print(dataStr, file=fileObj)
-
+                
+                #for production
                 panel_current = renogy.read_register(0x108)
                 panel_current = float(panel_current/100)
-                if (run): print("PV amps:", panel_current, "a")
+                if (run): print("PV Amps:", panel_current, "a")
                 valName  = "mode=\"pvAmps\""
                 valName  = "{" + valName + "}"
                 dataStr  = f"Renogy{valName} {float(register/100)}"
                 print(dataStr, file=fileObj)
-
+                
+                #for production
                 pvWatts = renogy.read_register(0x109)
                 if (run): print("PV watts:", pvWatts, "w")
                 valName  = "mode=\"pvWatts\""
@@ -159,6 +114,7 @@ def readRenogy(fileObj):
                 dataStr  = f"Renogy{valName} {pvWatts}"
                 print(dataStr, file=fileObj)
                 
+                #for testing
                 register = renogy.read_register(0x120)
                 chargeStateNum = register & 0x00ff
                 chargeStateStr = CHARGING_STATE.get(chargeStateNum)
@@ -168,7 +124,7 @@ def readRenogy(fileObj):
                 dataStr  = f"Renogy{valName} {chargeStateNum}"
                 print(dataStr, file=fileObj)
 
-
+                #for testing
                 register = renogy.read_register(0xE004)
                 batTypeStr = BATTERY_TYPE.get(register)
                 if (run): print("Bat Type:", batTypeStr)
